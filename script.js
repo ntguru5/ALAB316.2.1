@@ -32,3 +32,16 @@ body.appendChild(hintMessage);
 const startButton = document.createElement("button");
 startButton.textContent = "Start Game";
 body.appendChild(startButton);
+
+// event listener to start game
+startButton.addEventListener("click", startGame);
+
+
+function startGame() {
+    // generate a random number between 1-100, include 100
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
+    let attemptsLeft = 10;
+    let minRange = 1;
+    let maxRange = 100;
+    console.log(randomNumber);
+}
