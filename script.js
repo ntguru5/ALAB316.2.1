@@ -22,14 +22,13 @@ title.textContent = 'Guessing Game Lab 316.3.1';
 body.appendChild(title);
 
 const message = document.createElement('p');
-message.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
+message.textContent = `Click Start Game! You have 10 guesses to guess the correct number between 1 and 100.`;
 body.appendChild(message);
 
 // colored progress bar to track guesses
 const progressBar = document.createElement('div');
 progressBar.style.width = '100%';
 progressBar.style.height = '50px';
-progressBar.style.backgroundColor = 'lightgray';
 progressBar.style.margin = '20px 0';
 body.appendChild(progressBar);
 
@@ -75,7 +74,7 @@ function startGame() {
     hintMessage.textContent = 'Make a guess!';
     progress.style.width = '100%';
     progress.style.backgroundColor = 'green';
-    message.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
+    // message.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
 }
     // event listener to handle user guess
     guessButton.addEventListener('click', () => {
