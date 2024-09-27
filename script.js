@@ -22,7 +22,7 @@ title.textContent = 'Guessing Game Lab 316.3.1';
 body.appendChild(title);
 
 const message = document.createElement('p');
-message.textContent = `Click Start Game! You have 10 guesses to guess the correct number between 1 and 100.`;
+message.textContent = `Click Start Game to start! You have 10 guesses to guess the correct number between 1 and 100.`;
 body.appendChild(message);
 
 // colored progress bar to track guesses
