@@ -65,16 +65,18 @@ body.appendChild(startButton);
 startButton.addEventListener('click', startGame);
 
 function startGame() {
-    // generate a random number between 1-100, include 100
-    randomNumber = Math.floor(Math.random() * 100) + 1;
-    let attemptsLeft = 10;
-    let minRange = 1;
-    let maxRange = 100;
-    console.log(randomNumber); //testing
+    randomNumber = Math.floor(Math.random() * 100) + 1; // generate a random number
+    attemptsLeft = 10;
+    minRange = 1;70557050
+    maxRange = 100;7055
+    console.log(randomNumber); // for testing purposes
     input.disabled = false;
-    guessButton.disabled - false;
-    hintMessage.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
-
+    guessButton.disabled = false;
+    hintMessage.textContent = 'Make a guess!';
+    progress.style.width = '100%';
+    progress.style.backgroundColor = 'green';
+    message.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
+}
     // event listener to handle user guess
     guessButton.addEventListener('click', () => {
         const userGuess = parseInt(input.value, 10);
@@ -113,7 +115,7 @@ function startGame() {
         }
 
         attemptsLeft--;
-        updateHint(hint);
+        updateHint(hint, 'yellow');
         updateProgress(attemptsLeft);
 
         // end game if no attempts left
@@ -146,9 +148,8 @@ function startGame() {
     }
 
     // function to update hint message
-    function updateHint(hint, color) {
+    function updateHint(hint) {
         hintMessage.textContent = hint;
-        hintMessage.style.color = color;
     }
 
     // function to update progress bar
@@ -166,4 +167,14 @@ function startGame() {
 
         message.textContent = `You have ${attemptsLeft} guesses left.`;
     }
-}
+
+    // function to end the game
+    function endGame(isWin) {
+        input.disabled = true;
+        guessButton.disabled = true;
+        if (isWin) {
+            alert('Congratulations! You guessed the correct number!');
+        } else {
+            alert('Sorry, you ran out of guesses!');
+        }
+    }
