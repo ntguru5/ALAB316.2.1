@@ -13,6 +13,8 @@
  * Display if player wins or loses at end
  * At end, allow player to start new game or quit
  */
+let randomNumber, attemptsLeft, minRange, maxRange;
+
 // document body and title
 const body = document.body;
 const title = document.createElement('h1');
@@ -43,6 +45,17 @@ const hintMessage = document.createElement('p');
 hintMessage.textContent = 'Make a guess!';
 body.appendChild(hintMessage);
 
+// Inout for user guess
+const input = document.createElement('input');
+input.type = 'number';
+input.placeholder = 'Enter your guess';
+body.appendChild(input);
+
+// guess button
+const guessButton = document.createElement('button');
+guessButton.textContent = 'Submit Guess';
+body.appendChild(guessButton);
+
 // Start button
 const startButton = document.createElement('button');
 startButton.textContent = 'Start Game';
@@ -51,38 +64,42 @@ body.appendChild(startButton);
 // event listener to start game
 startButton.addEventListener('click', startGame);
 
-
 function startGame() {
     // generate a random number between 1-100, include 100
-    const randomNumber = Math.floor(Math.random() * 100) + 1;
+    randomNumber = Math.floor(Math.random() * 100) + 1;
     let attemptsLeft = 10;
     let minRange = 1;
     let maxRange = 100;
-    console.log(randomNumber);
+    console.log(randomNumber); //testing
+    input.disabled = false;
+    guessButton.disabled - false;
+    hintMessage.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
 
-    while (attemptsLeft > 0) {
-        const userGuess = parseInt(prompt(`Guess a number between ${minRange} and ${maxRange}. You have ${attemptsLeft} guesses left.`), 10);
+    // event listener to handle user guess
+    guessButton.addEventListener('click', () => {
+        const userGuess = parseInt(input.value, 10);
 
         if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
             alert(`Please enter a valid number between ${minRange} and ${maxRange}`);
-            continue;
+            return;
         }
+
         // calculate difference between guess and correct number
         const diff = Math.abs(userGuess - randomNumber);
 
-        // Provide hint messages based on diff
         let hint = '';
         if (diff === 0) {
             hint = 'Congrats you psychic! You guessed the correct number!';
-            updateHint(hint);
-            break;
+            updateHint(hint, 'green');
+            endGame(true);
+            return;
         } else if (diff <= 3) {
             hint = 'Very close! Almost there!';
-        } else if ( diff <= 10) {
+        } else if (diff <= 10) {
             hint = 'Getting warmer! Try again.';
-        } else if ( diff <= 20) {
+        } else if (diff <= 20) {
             hint = 'Way off! Try again.';
-        } else if ( userGuess > randomNumber) {
+        } else if (userGuess > randomNumber) {
             hint = 'Too high!';
         } else {
             hint = 'Too low!';
@@ -91,41 +108,62 @@ function startGame() {
         // adjust range to guide user
         if (userGuess > randomNumber) {
             maxRange = userGuess - 1;
-        } else if (userGuess < randomNumber) {
+        } else {
             minRange = userGuess + 1;
         }
 
-        // update hint
-        updateHint(hint, 'yellow');
         attemptsLeft--;
+        updateHint(hint);
         updateProgress(attemptsLeft);
 
         // end game if no attempts left
         if (attemptsLeft === 0) {
-            alert(`Game over! The correct number was ${randomNumber}.`);
-            updateHint(`Game over! Better luck next time.`, 'red');
+            updateHint(`Game over! The correct number was ${randomNumber}.`, 'red');
+            endGame(false);
         }
-    }
-}
+    });
 
-// function to update hint message
-function updateHint(hint, color) {
-    hintMessage.textContent = hint;
-    hintMessage.style.color = color;
-}
-
-// function to update progress bar
-function updateProgress(attemptsLeft) {
-    const progressPercentage = (attemptsLeft / 10) * 100;
-    progress.style.width = progressPercentage + '%';
-
-    if (attemptsLeft > 7) {
-        progress.style.backgroundColor = 'green';
-    } else if (attemptsLeft > 4) {
-        progress.style.backgroundColor = 'yellow';
-    } else {
-        progress.style.backgroundColor = 'red';
+    // function to update hint message
+    function updateHint(hint, color) {
+        hintMessage.textContent = hint;
+        hintMessage.style.color = color;
     }
 
-    message.textContent = `You have ${attemptsLeft} guesses left.`;
+    // function to update progress bar
+    function updateProgress(attemptsLeft) {
+        const progressPercentage = (attemptsLeft / 10) * 100;
+        progress.style.width = progressPercentage + '%';
+
+        if (attemptsLeft > 7) {
+            progress.style.backgroundColor = 'green';
+        } else if (attemptsLeft > 4) {
+            progress.style.backgroundColor = 'yellow';
+        } else {
+            progress.style.backgroundColor = 'red';
+        }
+
+        message.textContent = `You have ${attemptsLeft} guesses left.`;
+    }
+
+    // function to update hint message
+    function updateHint(hint, color) {
+        hintMessage.textContent = hint;
+        hintMessage.style.color = color;
+    }
+
+    // function to update progress bar
+    function updateProgress(attemptsLeft) {
+        const progressPercentage = (attemptsLeft / 10) * 100;
+        progress.style.width = progressPercentage + '%';
+
+        if (attemptsLeft > 7) {
+            progress.style.backgroundColor = 'green';
+        } else if (attemptsLeft > 4) {
+            progress.style.backgroundColor = 'yellow';
+        } else {
+            progress.style.backgroundColor = 'red';
+        }
+
+        message.textContent = `You have ${attemptsLeft} guesses left.`;
+    }
 }
