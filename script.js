@@ -13,3 +13,22 @@
  * Display if player wins or loses at end
  * At end, allow player to start new game or quit
  */
+// document body and title
+const body = document.body;
+const title = document.createElement("h1");
+title.textContent = "Guessing Game Lab 316.3.1";
+body.appendChild(title);
+
+const message = document.createElement("p");
+message.textContent = "You have 10 guesses to guess the correct number between 1 and 100";
+body.appendChild(message);
+
+// hint messages
+const hintMessage = document.createElement("p");
+hintMessage.textContent = "Make a guess!";
+body.appendChild(hintMessage);
+
+// Start button
+const startButton = document.createElement("button");
+startButton.textContent = "Start Game";
+body.appendChild(startButton);
