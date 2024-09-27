@@ -23,6 +23,21 @@ const message = document.createElement('p');
 message.textContent = 'You have 10 guesses to guess the correct number between 1 and 100';
 body.appendChild(message);
 
+// colored progress bar to track guesses
+const progressBar = document.createElement('div');
+progressBar.style.width = '100%';
+progressBar.style.height = '50px';
+progressBar.style.backgroundColor = 'lightgray';
+progressBar.style.margin = '20px 0';
+body.appendChild(progressBar);
+
+// progress bar to show number of attempts left
+const progress = document.createElement('div');
+progress.style.width = '100%';
+progress.style.height = '100%';
+progress.style.backgroundColor = 'green';
+progressBar.appendChild(progress);
+
 // hint messages
 const hintMessage = document.createElement('p');
 hintMessage.textContent = 'Make a guess!';
@@ -45,46 +60,72 @@ function startGame() {
     let maxRange = 100;
     console.log(randomNumber);
 
-while (attemptsLeft > 0) {
-    const userGuess = parseInt(prompt(`Guess a number between ${minRange} and ${maxRange}. You have ${attemptsLeft} guesses left.`), 10);
+    while (attemptsLeft > 0) {
+        const userGuess = parseInt(prompt(`Guess a number between ${minRange} and ${maxRange}. You have ${attemptsLeft} guesses left.`), 10);
 
-    if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
-        alert(`Please enter a valid number between ${minRange} and ${maxRange}`);
-        continue;
+        if (isNaN(userGuess) || userGuess < minRange || userGuess > maxRange) {
+            alert(`Please enter a valid number between ${minRange} and ${maxRange}`);
+            continue;
+        }
+        // calculate difference between guess and correct number
+        const diff = Math.abs(userGuess - randomNumber);
+
+        // Provide hint messages based on diff
+        let hint = '';
+        if (diff === 0) {
+            hint = 'Congrats you psychic! You guessed the correct number!';
+            updateHint(hint);
+            break;
+        } else if (diff <= 3) {
+            hint = 'Very close! Almost there!';
+        } else if ( diff <= 10) {
+            hint = 'Getting warmer! Try again.';
+        } else if ( diff <= 20) {
+            hint = 'Way off! Try again.';
+        } else if ( userGuess > randomNumber) {
+            hint = 'Too high!';
+        } else {
+            hint = 'Too low!';
+        }
+
+        // adjust range to guide user
+        if (userGuess > randomNumber) {
+            maxRange = userGuess - 1;
+        } else if (userGuess < randomNumber) {
+            minRange = userGuess + 1;
+        }
+
+        // update hint
+        updateHint(hint, 'yellow');
+        attemptsLeft--;
+        updateProgress(attemptsLeft);
+
+        // end game if no attempts left
+        if (attemptsLeft === 0) {
+            alert(`Game over! The correct number was ${randomNumber}.`);
+            updateHint(`Game over! Better luck next time.`, 'red');
+        }
     }
-    // calculate difference between guess and correct number
-    const diff = Math.abs(userGuess - randomNumber);
-
-    // Provide hint messages based on diff
-    let hint = '';
-    if (diff === 0) {
-        hint = 'Congrats you psychic! You guessed the correct number!';
-        updateHint(hint);
-        break;
-    } else if (diff <= 3) {
-        hint = 'Very close! Almost there!';
-    } else if ( diff <= 10) {
-        hint = 'Getting warmer! Try again.';
-    } else if ( diff <= 20) {
-        hint = 'Way off! Try again.';
-    } else if ( userGuess > randomNumber) {
-        hint = 'Too high!';
-    } else {
-        hint = 'Too low!';
-    }
-
-    // adjust range to guide user
-    if (userGuess > randomNumber) {
-        maxRange = userGuess - 1;
-    } else if (userGuess < randomNumber) {
-        minRange = userGuess + 1;
-    }
-
-}
 }
 
 // function to update hint message
 function updateHint(hint, color) {
     hintMessage.textContent = hint;
     hintMessage.style.color = color;
+}
+
+// function to update progress bar
+function updateProgress(attemptsLeft) {
+    const progressPercentage = (attemptsLeft / 10) * 100;
+    progress.style.width = progressPercentage + '%';
+
+    if (attemptsLeft > 7) {
+        progress.style.backgroundColor = 'green';
+    } else if (attemptsLeft > 4) {
+        progress.style.backgroundColor = 'yellow';
+    } else {
+        progress.style.backgroundColor = 'red';
+    }
+
+    message.textContent = `You have ${attemptsLeft} guesses left.`;
 }
