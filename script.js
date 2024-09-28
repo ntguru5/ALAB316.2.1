@@ -53,6 +53,7 @@ body.appendChild(input);
 // guess button
 const guessButton = document.createElement('button');
 guessButton.textContent = 'Submit Guess';
+guessButton.disabled = true;
 body.appendChild(guessButton);
 
 // Start button
@@ -66,8 +67,8 @@ startButton.addEventListener('click', startGame);
 function startGame() {
     randomNumber = Math.floor(Math.random() * 100) + 1; // generate a random number
     attemptsLeft = 10;
-    minRange = 1;70557050
-    maxRange = 100;7055
+    minRange = 1;
+    maxRange = 100;
     console.log(randomNumber); // for testing purposes
     input.disabled = false;
     guessButton.disabled = false;
